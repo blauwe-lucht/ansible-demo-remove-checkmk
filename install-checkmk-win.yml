@@ -1,0 +1,13 @@
+---
+- hosts: win
+  tasks:
+  - name: Copy Checkmk agent installer.
+    win_copy:
+      src: check-mk-agent-ALL.msi
+      dest: "c:\\check-mk-agent-ALL.msi"
+
+  - name: Install Checkmk agent.
+    win_package:
+      path: c:\\check-mk-agent-ALL.msi
+      product_id: '{3A00F954-807F-11E9-B1FF-005056BC29DF}'
+      state: present

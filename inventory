@@ -1,0 +1,41 @@
+# Eerste definieren we alle servers ('hosts') die er zijn:
+# (deze lijst is gegenereerd met Generate-Inventory.ps1)
+win2016 ansible_host=192.168.14.35
+win2019 ansible_host=192.168.14.36
+win2022 ansible_host=192.168.14.37
+lnx01 ansible_host=192.168.14.38
+
+# Die verdelen we in twee groepen: win_old en win_new:
+[win_old]
+win2016
+
+[win_new]
+win2019
+win2022
+
+# Die voegen we samen tot een overkoepelende groep (let op de 'children' toevoeging):
+[win:children]
+win_old
+win_new
+
+# Voor alle machines in de 'win' groep zetten we een aantal variabelen om:
+# - Ansible met het juiste account te laten inloggen,
+# - Ansible op de juiste manier verbinding te laten maken met deze hosts.
+[win:vars]
+ansible_user=vagrant
+# Wachtwoord staat versleuteld met Ansible Vault in group_vars.
+ansible_port=5985
+ansible_connection=winrm
+ansible_winrm_transport=basic
+ansible_winrm_server_cert_validation=ignore
+
+[linux]
+lnx01
+
+[linux:vars]
+ansible_user=vagrant
+# Wachtwoord staat versleuteld met Ansible Vault in group_vars.
+# Voor de meeste dingen moeten we toch echt root zijn, dat gebeurt met 'become':
+ansible_become=yes
+# Om vervelende python vs python3 warnings te voorkomen:
+ansible_python_interpreter=/usr/bin/python3

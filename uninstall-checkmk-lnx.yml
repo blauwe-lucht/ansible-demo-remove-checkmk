@@ -1,0 +1,27 @@
+---
+- hosts: linux
+  tasks:
+  - name: Uninstall Checkmk agent.
+    apt:
+      name: check-mk-free-2.0.0p19
+      state: absent
+
+  - name: Remove Checkmk agent installer.
+    file:
+      path: "c:\\check-mk-agent-ALL.msi"
+      state: absent
+
+  - name: Inspect check-mk package.
+    shell:
+      set -o pipefail
+      apt list --installed | grep check-mk
+    failed_when: false
+    changed_when: false
+    register: check_result
+
+  - name: Check if check-mk package is absent.
+    assert:
+      that:
+        - "check_result.rc == 1"
+      fail_msg: "The package is still installed."
+      success_msg: "The package was successfully removed."

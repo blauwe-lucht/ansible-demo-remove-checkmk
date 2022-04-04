@@ -1,0 +1,26 @@
+---
+- hosts: win
+  tasks:
+  - name: Uninstall Checkmk agent.
+    win_package:
+      product_id: '{3A00F954-807F-11E9-B1FF-005056BC29DF}'
+      state: absent
+
+  - name: Remove Checkmk agent installer.
+    win_file:
+      path: "c:\\check-mk-agent-ALL.msi"
+      state: absent
+
+  - name: Inspect Check_MK_Agent service.
+    win_shell:
+      Get-Service Check_MK_Agent
+    failed_when: false
+    changed_when: false
+    register: check_result
+
+  - name: Check if Check_MK_Agent service is absent.
+    assert:
+      that:
+        - "(check_result.stderr_lines | length > 0) and 'Cannot find any service' in check_result.stderr_lines[0]"
+      fail_msg: "The service is still running."
+      success_msg: "The service was successfully removed."

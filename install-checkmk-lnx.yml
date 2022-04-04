@@ -1,0 +1,15 @@
+---
+- hosts: linux
+  tasks:
+  - name: Copy Checkmk agent installer.
+    copy:
+      src: check-mk-free-2.0.0p19_0.buster_amd64.deb
+      dest: /tmp/check-mk-free-2.0.0p19_0.buster_amd64.deb
+      mode: 0644
+
+  - name: Install Checkmk agent.
+    apt:
+      update_cache: true
+      cache_valid_time: 3600
+      deb: /tmp/check-mk-free-2.0.0p19_0.buster_amd64.deb
+      state: present

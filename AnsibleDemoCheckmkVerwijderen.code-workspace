@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.yml": "ansible"
+		},
+	},
+	"[ansible]": {
+		"editor.quickSuggestions": {
+			"comments": true,
+			"other": true,
+			"strings": true
+		}
+	}
+}

@@ -1,0 +1,1 @@
+ansible-playbook win_ping.yml

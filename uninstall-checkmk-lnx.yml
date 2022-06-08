@@ -3,12 +3,12 @@
   tasks:
   - name: Uninstall Checkmk agent.
     apt:
-      name: check-mk-free-2.0.0p19
+      name: check-mk-agent
       state: absent
 
   - name: Remove Checkmk agent installer.
     file:
-      path: "c:\\check-mk-agent-ALL.msi"
+      path: /tmp/check-mk-agent_2.0.0p22-1_all.deb
       state: absent
 
   - name: Inspect check-mk package.
